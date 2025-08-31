@@ -6,7 +6,7 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { LoginInput } from '../input';
+import { LoginInput } from '../inputs';
 
 export class LocalAuthGuard extends AuthGuard('local') implements CanActivate {
   getRequest(context: ExecutionContext) {

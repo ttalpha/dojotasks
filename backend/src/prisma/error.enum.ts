@@ -1,4 +1,4 @@
-export enum PrismaError {
+export enum PostgresErrorCode {
   UniqueViolation = 'P2002',
   ForeignViolation = 'P2003',
   RecordNotFound = 'P2025',

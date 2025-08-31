@@ -5,7 +5,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
-import { CreateUserInput } from '../users/input';
+import { CreateUserInput } from '../users/inputs';
 
 @Injectable()
 export class AuthService {

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { CreateUserInput } from '../users/input';
+import { CreateUserInput } from '../users/inputs';
 import { User } from '../../generated/prisma';
 import { userFixture } from '../users/test-utils';
 import { BadRequestException } from '@nestjs/common';
@@ -65,10 +65,7 @@ describe('AuthResolver', () => {
   describe('login', () => {
     it('should return the current user', async () => {
       jest.spyOn(service, 'validateUser').mockResolvedValue(user);
-      expect(
-        await resolver.login({ email: user.email, password: 'hash' }),
-      ).toEqual(user);
-      expect(service.validateUser).toHaveBeenCalledWith(user.email, 'hash');
+      expect(await resolver.login({} as any, user)).toEqual(user);
     });
   });
 

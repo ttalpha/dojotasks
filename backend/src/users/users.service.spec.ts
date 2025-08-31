@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, User } from '../../generated/prisma';
 import { userFixture } from './test-utils';
-import { PrismaError } from '../prisma/error.enum';
+import { PostgresErrorCode } from '../prisma/error.enum';
 import {
   BadRequestException,
   InternalServerErrorException,
@@ -25,6 +25,7 @@ describe('UsersService', () => {
             user: {
               create: jest.fn(),
               findUnique: jest.fn(),
+              findUniqueOrThrow: jest.fn(),
             },
           },
         },
@@ -58,7 +59,7 @@ describe('UsersService', () => {
         .mockRejectedValue(
           new Prisma.PrismaClientKnownRequestError(
             'ERROR: duplicate key value violates unique constraint "email"',
-            { clientVersion: '5.0', code: PrismaError.UniqueViolation },
+            { clientVersion: '5.0', code: PostgresErrorCode.UniqueViolation },
           ),
         );
       expect(
@@ -97,7 +98,7 @@ describe('UsersService', () => {
         .mockRejectedValue(
           new Prisma.PrismaClientKnownRequestError(
             'An operation failed because it depends on one or more records that were required but not found.',
-            { code: PrismaError.RecordNotFound, clientVersion: '5.0' },
+            { code: PostgresErrorCode.RecordNotFound, clientVersion: '5.0' },
           ),
         );
       expect(service.findById(user.id)).rejects.toThrow(NotFoundException);

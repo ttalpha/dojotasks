@@ -5,9 +5,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma } from '../../generated/prisma';
-import { PrismaError } from '../prisma/error.enum';
+import { PostgresErrorCode } from '../prisma/error.enum';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateUserInput } from './input';
+import { CreateUserInput } from './inputs';
 
 @Injectable()
 export class UsersService {
@@ -22,7 +22,7 @@ export class UsersService {
       return newUser;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === PrismaError.UniqueViolation)
+        if (error.code === PostgresErrorCode.UniqueViolation)
           throw new BadRequestException('Email already exists');
       }
 
@@ -46,7 +46,7 @@ export class UsersService {
       return user;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError)
-        if (error.code === PrismaError.RecordNotFound)
+        if (error.code === PostgresErrorCode.RecordNotFound)
           throw new NotFoundException('Cannot find user with the given id');
       throw new InternalServerErrorException('Something went wrong');
     }

@@ -5,7 +5,7 @@ import { User } from '../../generated/prisma';
 import { userFixture } from '../users/test-utils';
 import { UsersService } from '../users/users.service';
 import { BadRequestException } from '@nestjs/common';
-import { CreateUserInput } from '../users/input';
+import { CreateUserInput } from '../users/inputs';
 
 jest.mock('argon2');
 

@@ -2,11 +2,28 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateProjectInput {
+  memberIds: [Int!]!
+  name: String!
+}
+
+input CreateTaskInput {
+  assigneeIds: [Int!]!
+  projectId: Int!
+  status: String!
+  title: String!
+}
+
 input CreateUserInput {
   email: String!
   name: String!
   password: String!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 input LoginInput {
   email: String!
@@ -14,13 +31,41 @@ input LoginInput {
 }
 
 type Mutation {
+  createProject(createProjectInput: CreateProjectInput!): Project!
+  createTask(createTaskInput: CreateTaskInput!): Task!
   login(loginInput: LoginInput!): User!
   logout: Boolean!
   register(createUserInput: CreateUserInput!): User!
+  updateTask(updateTaskInput: UpdateTaskInput!): Task!
+}
+
+type Project {
+  createdAt: DateTime!
+  id: Int!
+  members: [User!]!
+  name: String!
+  tasks: [Task!]!
 }
 
 type Query {
   me: User!
+  project(id: Int!): Project!
+  projects: [Project!]!
+}
+
+type Task {
+  assignees: [User!]!
+  createdAt: DateTime!
+  id: Int!
+  status: String!
+  title: String!
+}
+
+input UpdateTaskInput {
+  assigneeIds: [Int!]
+  id: Int!
+  status: String
+  title: String
 }
 
 type User {

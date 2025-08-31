@@ -6,6 +6,8 @@ import Joi from '@hapi/joi';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { ProjectsModule } from './projects/projects.module';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { join } from 'path';
       sortSchema: true,
     }),
     UsersModule,
+    ProjectsModule,
+    TasksModule,
   ],
 })
 export class AppModule {}

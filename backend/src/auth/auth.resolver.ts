@@ -2,11 +2,11 @@ import { Req, UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { type Request } from 'express';
 import { CurrentUser } from '../users/decorators';
-import { CreateUserInput } from '../users/input';
+import { CreateUserInput } from '../users/inputs';
 import { AuthService } from './auth.service';
 import { CookieAuthGuard, LocalAuthGuard } from './guards';
-import { User } from '../users/entities/user';
-import { LoginInput } from './input';
+import { User } from '../users/entities/user.entity';
+import { LoginInput } from './inputs';
 
 @Resolver('auth')
 export class AuthResolver {
