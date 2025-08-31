@@ -69,11 +69,19 @@ describe('ProjectsService', () => {
       const result = await service.findAll();
 
       expect(prisma.project.findMany).toHaveBeenCalledWith({
-        select: { id: true, name: true },
+        include: {
+          members: true,
+          tasks: {
+            include: {
+              assignees: true,
+              comments: { include: { author: true } },
+            },
+          },
+        },
       });
       expect(result).toEqual([
-        { id: 1, name: 'Project A', tasks: [], members: [] },
-        { id: 2, name: 'Project B', tasks: [], members: [] },
+        { id: 1, name: 'Project A' },
+        { id: 2, name: 'Project B' },
       ]);
     });
 
@@ -101,7 +109,15 @@ describe('ProjectsService', () => {
 
       expect(prisma.project.findUnique).toHaveBeenCalledWith({
         where: { id: 1 },
-        include: { tasks: { include: { assignees: true } }, members: true },
+        include: {
+          tasks: {
+            include: {
+              comments: { include: { author: true } },
+              assignees: true,
+            },
+          },
+          members: true,
+        },
       });
       expect(result).toEqual(mockProject);
     });

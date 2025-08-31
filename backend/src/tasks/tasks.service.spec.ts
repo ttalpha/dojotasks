@@ -58,9 +58,7 @@ describe('TasksService', () => {
           status: input.status,
           projectId: input.projectId,
         },
-        include: {
-          assignees: true,
-        },
+        include: { assignees: true, comments: { include: { author: true } } },
       });
       expect(newTask).toEqual(task);
     });
@@ -84,9 +82,7 @@ describe('TasksService', () => {
           assignees: { set: input.assigneeIds?.map((id) => ({ id })) },
           status: input.status,
         },
-        include: {
-          assignees: true,
-        },
+        include: { assignees: true, comments: { include: { author: true } } },
       });
       expect(updated).toEqual(task);
     });

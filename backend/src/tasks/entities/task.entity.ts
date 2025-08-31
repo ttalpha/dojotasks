@@ -1,6 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { TaskStatus } from '../../../generated/prisma';
 import { User } from '../../users/entities/user.entity';
+import { Comment } from '../../comments/entities/comment.entity';
 
 @ObjectType()
 export class Task {
@@ -15,6 +16,9 @@ export class Task {
 
   @Field(() => [User])
   assignees: User[];
+
+  @Field(() => [Comment])
+  comments: Comment[];
 
   @Field(() => Date)
   createdAt: Date;

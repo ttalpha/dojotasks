@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -19,19 +20,33 @@ export class TasksService {
     status,
     title,
   }: CreateTaskInput): Promise<Task> {
-    const newTask = await this.prisma.task.create({
-      data: {
-        assignees: { connect: assigneeIds.map((id) => ({ id })) },
-        title,
-        status,
-        projectId,
-      },
-      include: { assignees: true },
-    });
-    return newTask;
+    try {
+      const newTask = await this.prisma.task.create({
+        data: {
+          assignees: { connect: assigneeIds.map((id) => ({ id })) },
+          title,
+          status,
+          projectId,
+        },
+        include: { assignees: true, comments: { include: { author: true } } },
+      });
+      return newTask;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === PostgresErrorCode.ForeignViolation) {
+          throw new BadRequestException('Project ID is not found');
+        }
+      }
+      throw new InternalServerErrorException();
+    }
   }
 
-  async update({ id, title, status, assigneeIds }: UpdateTaskInput) {
+  async update({
+    id,
+    title,
+    status,
+    assigneeIds,
+  }: UpdateTaskInput): Promise<Task> {
     try {
       const updatedTask = await this.prisma.task.update({
         where: { id },
@@ -40,7 +55,7 @@ export class TasksService {
           title,
           status,
         },
-        include: { assignees: true },
+        include: { assignees: true, comments: { include: { author: true } } },
       });
       return updatedTask;
     } catch (error) {

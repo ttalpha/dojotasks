@@ -2,6 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Comment {
+  author: User!
+  authorId: Float!
+  id: Int!
+  taskId: Int!
+  text: String!
+}
+
+input CreateCommentInput {
+  taskId: Int!
+  text: String!
+}
+
 input CreateProjectInput {
   memberIds: [Int!]!
   name: String!
@@ -31,6 +44,7 @@ input LoginInput {
 }
 
 type Mutation {
+  createComment(createCommentInput: CreateCommentInput!): Comment!
   createProject(createProjectInput: CreateProjectInput!): Project!
   createTask(createTaskInput: CreateTaskInput!): Task!
   login(loginInput: LoginInput!): User!
@@ -55,6 +69,7 @@ type Query {
 
 type Task {
   assignees: [User!]!
+  comments: [Comment!]!
   createdAt: DateTime!
   id: Int!
   status: String!
