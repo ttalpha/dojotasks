@@ -9,6 +9,7 @@ import { join } from 'path';
 import { ProjectsModule } from './projects/projects.module';
 import { TasksModule } from './tasks/tasks.module';
 import { CommentsModule } from './comments/comments.module';
+import { PubSubModule } from './pub-sub/pubsub.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { CommentsModule } from './comments/comments.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       graphiql: true,
       sortSchema: true,
+      subscriptions: { 'graphql-ws': true },
     }),
     UsersModule,
     ProjectsModule,

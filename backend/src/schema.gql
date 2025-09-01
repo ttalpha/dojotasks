@@ -67,6 +67,11 @@ type Query {
   projects: [Project!]!
 }
 
+type Subscription {
+  commentAdded: Comment!
+  taskUpdated: Task!
+}
+
 type Task {
   assignees: [User!]!
   comments: [Comment!]!
